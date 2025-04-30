@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="memberSql">
+
+<sql id="memberNum">
+
+	select concat('mem_', nvl(substr(max(member_num),5),10000)+1) from members	
+
+</sql>
+
+<select id="memberSelectOne" parameterType="string"	resultType="auth">
+
+	select member_id userId, member_pw userPw, member_name userName, member_email userEmail, 'mem' grade
+	from members
+	where member_id = #{userId} and member_email_conf is not null
+	union
+	select emp_id, emp_pw, emp_name, emp_email, 'emp' grade
+	from employees
+	where emp_id = #{userId}
+	
+</select>
+
+<update id="userPwUpdate" parameterType="userChangePasswordDTO">
+
+	<!-- ${} : 테이블명, 컬럼 / #{}: 값 -->
+	update ${tableName}
+	set ${pwColumnName} = #{userPw}
+	where ${userIdColumnName} = #{userId}
+			and ${phoneColumnName} = #{userPhone}
+
+</update>
+
+
+<update id="emailCheckUpdate" parameterType="string">
+
+	update members
+	set member_email_conf = 'y'
+	where member_id = #{userId}
+			and member_email_conf is null
+
+</update>
+
+</mapper>
+        
+        
+        
+        
+        
+        
