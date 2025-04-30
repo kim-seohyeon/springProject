@@ -8,7 +8,7 @@
 <title>memberList</title>
 </head>
 <body>
-회원리스트<br/>
+회원리스트입니다.<br/>
 <a href="memberWrite">회원 등록</a><br/>
 
 <table border=1 width=600>
